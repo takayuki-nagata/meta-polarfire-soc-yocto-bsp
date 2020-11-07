@@ -1,22 +1,26 @@
-From fef52134f55b2be3dac644fd1c06ee7dd0305ff7 Mon Sep 17 00:00:00 2001
-From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 11 Aug 2020 13:56:10 +0530
+From 71c7844a51496e0fa917f0d08f28daf43a7c27e0 Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 11:49:21 +0900
 Subject: [PATCH 5/5] gem driver for the Microchip mpfs-icicle kit.
 
+Backport from d3b63021c3a521a3f08908d005e2df5d0d1ca8c9
+0005-gem-driver-for-the-Microchip-mpfs-icicle-kit.patch
+
+Original commit message:
 gem and vitesse driver for 64-bit dma access
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
- drivers/net/macb.c        | 52 ++++++++++++++++++++++++++++++---------
+ drivers/net/macb.c        | 48 ++++++++++++++++++++++++++++++++-------
  drivers/net/macb.h        |  3 ++-
- drivers/net/phy/vitesse.c | 28 ++++++++++++++++++++-
- 3 files changed, 70 insertions(+), 13 deletions(-)
+ drivers/net/phy/vitesse.c | 28 ++++++++++++++++++++++-
+ 3 files changed, 69 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 8359425378..f0a6b5365a 100644
+index b80a259ff7..2bef32f50e 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -79,6 +79,8 @@ DECLARE_GLOBAL_DATA_PTR;
+@@ -81,6 +81,8 @@ DECLARE_GLOBAL_DATA_PTR;
  struct macb_dma_desc {
  	u32	addr;
  	u32	ctrl;
@@ -25,26 +29,15 @@ index 8359425378..f0a6b5365a 100644
  };
  
  #define DMA_DESC_BYTES(n)	(n * sizeof(struct macb_dma_desc))
-@@ -327,8 +329,7 @@ static int _macb_send(struct macb_device *macb, const char *name, void *packet,
+@@ -329,6 +331,7 @@ static int _macb_send(struct macb_device *macb, const char *name, void *packet,
  	macb->tx_ring[tx_head].addr = paddr;
  	barrier();
  	macb_flush_ring_desc(macb, TX);
--	/* Do we need check paddr and length is dcache line aligned? */
--	flush_dcache_range(paddr, paddr + ALIGN(length, ARCH_DMA_MINALIGN));
 +	macb_writel(macb, TBQP, (u32)&macb->tx_ring[tx_head]);
  	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
  
  	/*
-@@ -344,7 +345,7 @@ static int _macb_send(struct macb_device *macb, const char *name, void *packet,
- 		udelay(1);
- 	}
- 
--	dma_unmap_single(packet, length, paddr);
-+	dma_unmap_single(paddr, length, DMA_TO_DEVICE);
- 
- 	if (i <= MACB_TX_TIMEOUT) {
- 		if (ctrl & MACB_BIT(TX_UNDERRUN))
-@@ -467,18 +468,18 @@ static void macb_phy_reset(struct macb_device *macb, const char *name)
+@@ -467,18 +470,18 @@ static void macb_phy_reset(struct macb_device *macb, const char *name)
  
  static int macb_phy_find(struct macb_device *macb, const char *name)
  {
@@ -68,7 +61,7 @@ index 8359425378..f0a6b5365a 100644
  
  	/* PHY isn't up to snuff */
  	printf("%s: PHY not found\n", name);
-@@ -732,9 +733,10 @@ static int gmac_init_multi_queues(struct macb_device *macb)
+@@ -732,9 +735,10 @@ static int gmac_init_multi_queues(struct macb_device *macb)
  	flush_dcache_range(macb->dummy_desc_dma, macb->dummy_desc_dma +
  			ALIGN(MACB_TX_DUMMY_DMA_DESC_SIZE, PKTALIGN));
  
@@ -81,7 +74,7 @@ index 8359425378..f0a6b5365a 100644
  	return 0;
  }
  
-@@ -759,7 +761,8 @@ static void gmac_configure_dma(struct macb_device *macb)
+@@ -759,7 +763,8 @@ static void gmac_configure_dma(struct macb_device *macb)
  	else
  		dmacfg &= ~GEM_BIT(ENDIA_DESC);
  
@@ -91,7 +84,7 @@ index 8359425378..f0a6b5365a 100644
  	gem_writel(macb, DMACFG, dmacfg);
  }
  
-@@ -788,6 +791,7 @@ static int _macb_init(struct macb_device *macb, const char *name)
+@@ -788,6 +793,7 @@ static int _macb_init(struct macb_device *macb, const char *name)
  			paddr |= MACB_BIT(RX_WRAP);
  		macb->rx_ring[i].addr = paddr;
  		macb->rx_ring[i].ctrl = 0;
@@ -99,7 +92,7 @@ index 8359425378..f0a6b5365a 100644
  		paddr += macb->rx_buffer_size;
  	}
  	macb_flush_ring_desc(macb, RX);
-@@ -800,6 +804,7 @@ static int _macb_init(struct macb_device *macb, const char *name)
+@@ -800,6 +806,7 @@ static int _macb_init(struct macb_device *macb, const char *name)
  				MACB_BIT(TX_WRAP);
  		else
  			macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
@@ -107,7 +100,7 @@ index 8359425378..f0a6b5365a 100644
  	}
  	macb_flush_ring_desc(macb, TX);
  
-@@ -916,6 +921,28 @@ static int _macb_write_hwaddr(struct macb_device *macb, unsigned char *enetaddr)
+@@ -916,6 +923,28 @@ static int _macb_write_hwaddr(struct macb_device *macb, unsigned char *enetaddr)
  	u32 hwaddr_bottom;
  	u16 hwaddr_top;
  
@@ -136,7 +129,7 @@ index 8359425378..f0a6b5365a 100644
  	/* set hardware address */
  	hwaddr_bottom = enetaddr[0] | enetaddr[1] << 8 |
  			enetaddr[2] << 16 | enetaddr[3] << 24;
-@@ -1188,6 +1215,7 @@ static const struct eth_ops macb_eth_ops = {
+@@ -1188,6 +1217,7 @@ static const struct eth_ops macb_eth_ops = {
  static int macb_enable_clk(struct udevice *dev)
  {
  	struct macb_device *macb = dev_get_priv(dev);
@@ -144,7 +137,7 @@ index 8359425378..f0a6b5365a 100644
  	struct clk clk;
  	ulong clk_rate;
  	int ret;
-@@ -1210,7 +1238,9 @@ static int macb_enable_clk(struct udevice *dev)
+@@ -1210,7 +1240,9 @@ static int macb_enable_clk(struct udevice *dev)
  		return -EINVAL;
  
  	macb->pclk_rate = clk_rate;
@@ -213,5 +206,5 @@ index eca26c9893..0dad99a18b 100644
  	.shutdown = &genphy_shutdown,
  };
 -- 
-2.17.1
+2.26.2
 

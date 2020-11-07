@@ -1,27 +1,30 @@
-From 2f74decdabcdb0cdafe7f062116d1429172a4c3f Mon Sep 17 00:00:00 2001
-From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 11 Aug 2020 13:45:30 +0530
+From d5cfc132f881cf0fa868435cf5f316c1a8cbae42 Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 11:20:37 +0900
 Subject: [PATCH 2/5] include configs for the Microchip mpfs-icicle kit.
 
+Backport from d3b63021c3a521a3f08908d005e2df5d0d1ca8c9
+0002-include-configs-for-the-Microchip-mpfs-icicle-kit.patch
+
+Original commit message:
 include configuration for icicle kit
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
 ---
- include/configs/microchip_mpfs_icicle.h | 64 +++++++++----------------
- 1 file changed, 22 insertions(+), 42 deletions(-)
+ include/configs/microchip_mpfs_icicle.h | 61 +++++++++----------------
+ 1 file changed, 22 insertions(+), 39 deletions(-)
 
 diff --git a/include/configs/microchip_mpfs_icicle.h b/include/configs/microchip_mpfs_icicle.h
-index 2f90ab3175..5da67c295f 100644
+index 8a7470545b..7f9b2e44bb 100644
 --- a/include/configs/microchip_mpfs_icicle.h
 +++ b/include/configs/microchip_mpfs_icicle.h
-@@ -7,56 +7,36 @@
+@@ -7,53 +7,36 @@
  #ifndef __CONFIG_H
  #define __CONFIG_H
  
 -/*
 - * CPU and Board Configuration Options
 - */
--#define CONFIG_BOOTP_SEND_HOSTNAME
 +#include <linux/sizes.h>
  
 -/*
@@ -77,8 +80,6 @@ index 2f90ab3175..5da67c295f 100644
 -/*
 - * memtest works on DRAM
 - */
--#define CONFIG_SYS_MEMTEST_START	PHYS_SDRAM_0
--#define CONFIG_SYS_MEMTEST_END		(PHYS_SDRAM_0 + PHYS_SDRAM_0_SIZE)
 +#include <config_distro_bootcmd.h>
  
 -/* When we use RAM as ENV */
@@ -94,5 +95,5 @@ index 2f90ab3175..5da67c295f 100644
  
  #endif /* __CONFIG_H */
 -- 
-2.17.1
+2.26.2
 

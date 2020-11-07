@@ -1,8 +1,12 @@
-From 22a75cdf40bacdf35c2a988bac7c446c84b8aa89 Mon Sep 17 00:00:00 2001
-From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 11 Aug 2020 13:51:37 +0530
+From 8c5ba7db463c04e8c4f6575b3a26b5dd94b426de Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 11:33:21 +0900
 Subject: [PATCH 4/5] board specific code for the Microchip mpfs-icicle kit
 
+Backport from d3b63021c3a521a3f08908d005e2df5d0d1ca8c9
+0004-board-specific-code-for-the-Microchip-mpfs-icicle-ki.patch
+
+Original commit message:
 board initialization code for icicle kit
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
@@ -46,11 +50,11 @@ index bf8e1a13ec..3de4df2bb9 100644
  
  endif
 diff --git a/board/microchip/mpfs_icicle/mpfs_icicle.c b/board/microchip/mpfs_icicle/mpfs_icicle.c
-index 0ef243186d..cd608aea9b 100644
+index 8381361ec3..31c8867210 100644
 --- a/board/microchip/mpfs_icicle/mpfs_icicle.c
 +++ b/board/microchip/mpfs_icicle/mpfs_icicle.c
-@@ -8,23 +8,468 @@
- #include <dm.h>
+@@ -9,23 +9,468 @@
+ #include <init.h>
  #include <asm/io.h>
  
 -#define MPFS_SYSREG_SOFT_RESET	((unsigned int *)0x20002088)
@@ -526,5 +530,5 @@ index 0ef243186d..cd608aea9b 100644
  	return 0;
  }
 -- 
-2.17.1
+2.26.2
 

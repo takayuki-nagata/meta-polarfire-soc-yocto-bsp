@@ -1,8 +1,12 @@
-From 39f686b9f1f9a33c904717a6148bc392e5190ff8 Mon Sep 17 00:00:00 2001
-From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 11 Aug 2020 13:48:20 +0530
+From 20fe24b13bc6a651283e0425d34cd4f9e1da4ecc Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 11:29:40 +0900
 Subject: [PATCH 3/5] device tree for the Microchip mpfs-icicle kit.
 
+Backport from d3b63021c3a521a3f08908d005e2df5d0d1ca8c9
+0003-device-tree-for-the-Microchip-mpfs-icicle-kit.patch
+
+Original commit message:
 device tree for icicle kit
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
@@ -13,7 +17,7 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  create mode 100644 arch/riscv/dts/mpfs_icicle.dts
 
 diff --git a/arch/riscv/dts/Makefile b/arch/riscv/dts/Makefile
-index 4f30e6936f..34c81dcae1 100644
+index 3a6f96c67d..872c56821d 100644
 --- a/arch/riscv/dts/Makefile
 +++ b/arch/riscv/dts/Makefile
 @@ -2,6 +2,7 @@
@@ -21,9 +25,9 @@ index 4f30e6936f..34c81dcae1 100644
  dtb-$(CONFIG_TARGET_AX25_AE350) += ae350_32.dtb ae350_64.dtb
  dtb-$(CONFIG_TARGET_SIFIVE_FU540) += hifive-unleashed-a00.dtb
 +dtb-$(CONFIG_TARGET_MICROCHIP_ICICLE) += mpfs_icicle.dtb
+ dtb-$(CONFIG_TARGET_SIPEED_MAIX) += k210-maix-bit.dtb
  
  targets += $(dtb-y)
- 
 diff --git a/arch/riscv/dts/mpfs_icicle.dts b/arch/riscv/dts/mpfs_icicle.dts
 new file mode 100644
 index 0000000000..72c4602d86
@@ -466,5 +470,5 @@ index 0000000000..72c4602d86
 +	};
 +};
 -- 
-2.17.1
+2.26.2
 

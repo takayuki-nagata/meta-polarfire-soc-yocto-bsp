@@ -1,8 +1,12 @@
-From e217be0b771f59f253873d139f1d1ee3af9b52c5 Mon Sep 17 00:00:00 2001
-From: Padmarao Begari <padmarao.begari@microchip.com>
-Date: Tue, 11 Aug 2020 13:40:17 +0530
+From 518fe0d7cf249245962c705529700c462b133323 Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 11:00:08 +0900
 Subject: [PATCH 1/5] defconfig for the Microchip mpfs-icicle SoC board.
 
+Backport from d3b63021c3a521a3f08908d005e2df5d0d1ca8c9
+0001-defconfig-for-the-Microchip-mpfs-icicle-SoC-board.patch
+
+Original commit message:
 deconfig for icicle kit
 
 Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
@@ -11,27 +15,28 @@ Signed-off-by: Padmarao Begari <padmarao.begari@microchip.com>
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/configs/microchip_mpfs_icicle_defconfig b/configs/microchip_mpfs_icicle_defconfig
-index 45edb41876..f6888f249e 100644
+index 2977966473..2697e96bac 100644
 --- a/configs/microchip_mpfs_icicle_defconfig
 +++ b/configs/microchip_mpfs_icicle_defconfig
-@@ -1,11 +1,14 @@
+@@ -1,12 +1,15 @@
  CONFIG_RISCV=y
 +CONFIG_SMP=y
 +CONFIG_SBI_V01=y
 +CONFIG_NR_DRAM_BANKS=1
  CONFIG_ENV_SIZE=0x2000
  CONFIG_TARGET_MICROCHIP_ICICLE=y
- CONFIG_ARCH_RV64I=y
 -CONFIG_NR_CPUS=5
 +CONFIG_RISCV_SMODE=y
 +CONFIG_DISTRO_DEFAULTS=y
+ CONFIG_ARCH_RV64I=y
  CONFIG_FIT=y
 -CONFIG_BOOTDELAY=3
 +CONFIG_DEFAULT_DEVICE_TREE="mpfs_icicle"
  CONFIG_SYS_PROMPT="RISC-V # "
 -CONFIG_OF_PRIOR_STAGE=y
  CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_BOOTP_SEND_HOSTNAME=y
  CONFIG_DM_MTD=y
 -- 
-2.17.1
+2.26.2
 

@@ -14,6 +14,7 @@ BRANCH = "master"
 SRCREV="76b34dd0212425f9848eed41575db22cd829cecb"
 SRC_URI = "git://github.com/polarfire-soc/hart-software-services.git;branch=${BRANCH} \
            file://uboot.yaml \
+           file://0001-hss-payload-generator-link-libraries-without-static-.patch \
           "
 
 S = "${WORKDIR}/git"

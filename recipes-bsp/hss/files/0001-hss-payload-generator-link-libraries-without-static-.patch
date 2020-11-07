@@ -1,0 +1,25 @@
+From e26c59a956644a845f3824ec33d24af4fb58a627 Mon Sep 17 00:00:00 2001
+From: Takayuki Nagata <takayuki-nagata@users.noreply.github.com>
+Date: Sat, 7 Nov 2020 00:19:40 +0900
+Subject: [PATCH] hss-payload-generator: link libraries without static option
+
+---
+ tools/hss-payload-generator/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/hss-payload-generator/Makefile b/tools/hss-payload-generator/Makefile
+index 957fa76..2e03e36 100644
+--- a/tools/hss-payload-generator/Makefile
++++ b/tools/hss-payload-generator/Makefile
+@@ -96,7 +96,7 @@ all: $(TARGET)
+ 
+ $(TARGET): $(OBJS)
+ 	@$(ECHO) " LD        $@";
+-	$(CMD_PREFIX)$(CC) $(CFLAGS) -static -o $@ $(OBJS) $(LIBS)
++	$(CMD_PREFIX)$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+ 
+ README.docx: README.md
+ 	pandoc -o README.docx README.md
+-- 
+2.26.2
+
